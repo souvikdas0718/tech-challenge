@@ -39,22 +39,22 @@ CREATE TABLE dimension_genre (
     genreList STRING
 );
 
-CREATE TABLE dimension_duration (
+CREATE or replace TABLE dimension_duration (
     durationID INT AUTOINCREMENT PRIMARY KEY,
     durationType STRING,
-    time INT
+    durationTime INT NOT NULL
 );
 
 CREATE TABLE dimension_title (
     titleID INT AUTOINCREMENT PRIMARY KEY,
     showID STRING UNIQUE,
     title STRING,
-    titleType STRING,
+    titleType STRING, 
     description STRING,
     releaseYear INT
 );
 
--- Facts Table
+-- Fact Table
 CREATE TABLE fact_netflix_shows (
     show_factID INT AUTOINCREMENT PRIMARY KEY,
     titleID INT REFERENCES dimension_title(titleID),
