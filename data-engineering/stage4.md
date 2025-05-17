@@ -6,8 +6,6 @@ Identify and report any missing, invalid or strange data. This can be anything y
 
 ## Output - Snowflake Views
 
-<!-- **Data (Netflix\_titles.csv)** -->
-
 **1. Show count of titles aggregate used in decription of the latest staged table created in Stage 3**
 
 ```sql
@@ -152,8 +150,6 @@ where
 ```
 
 Query Output:
-
-## Show Details
 
 | SHOWID | TITLE                       | TITLETYPE | DESCRIPTION                                                                                                                                                                   | RELEASEYEAR | DIRECTORNAME | COUNTRYNAME    | DATE_ADDED | RATINGCODE | GENRELIST                  | DURATIONTYPE | DURATIONTIME |
 | ------ | --------------------------- | --------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- | ------------ | -------------- | ---------- | ---------- | -------------------------- | ------------ | ------------ |
