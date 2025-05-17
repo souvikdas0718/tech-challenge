@@ -18,22 +18,34 @@ CREATE OR REPLACE TABLE netflix_shows_stage_table (
     description STRING
 );
 
--- Load the raw data from netflix_titles.csv from the stage to the netflix_shows_stage_table
-copy into netflix_shows_stage_table
-from @netflix_shows_stage/netflix_titles.csv
-file_format = (type = 'CSV' FIELD_DELIMITER = ',' field_optionally_enclosed_by = '"' skip_header = 1)
-on_error = 'CONTINUE';
+-- Commented out the copy command to avoid running the statement manually, rather use the procedure and pass filename as as parameter
+
+-- -- Load the raw data from netflix_titles.csv from the stage to the netflix_shows_stage_table
+-- copy into netflix_shows_stage_table
+-- from @netflix_shows_stage/netflix_titles.csv
+-- file_format = (type = 'CSV' FIELD_DELIMITER = ',' field_optionally_enclosed_by = '"' skip_header = 1)
+-- on_error = 'CONTINUE';
 
 -- Verify the uploaded data
 select * from netflix_shows_stage_table limit 10;
 
 -- Create the ELT procedure
-create or replace procedure netflix_shows_ETL()
+create or replace procedure netflix_shows_ETL(file_name STRING)
 returns STRING
 language SQL
 as
 $$
 BEGIN
+
+-- Clear the staging table before loading new file data
+TRUNCATE TABLE netflix_shows_stage_table;
+
+-- Dynamically load the specified file into the staging table
+EXECUTE IMMEDIATE
+'copy into netflix_shows_stage_table
+from @netflix_shows_stage/' || file_name || '
+file_format = (type = ''CSV'' FIELD_DELIMITER = '','' field_optionally_enclosed_by = ''"'' skip_header = 1)
+on_error = ''CONTINUE''';
 
 -- Insert into dimension tables
 -- Use DISTINCT to avoid duplicates
@@ -171,5 +183,5 @@ RETURN 'SUCCESS';
 END;
 $$;
 
--- Call the procedure manually  
-CALL netflix_shows_ETL();
+-- Call the procedure manually by passing a manually uploaded file in the stage
+CALL netflix_shows_ETL('netflix_titles.csv');

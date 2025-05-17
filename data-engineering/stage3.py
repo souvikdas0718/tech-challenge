@@ -111,4 +111,11 @@ def main(session: snowpark.Session):
     # Print the output message in python console
     print(f"The new file '{file_name}' has been successfully written to stage @netflix_shows_stage with {len(dataframe)} records.")
 
+    # Call the stored procedure with the newly created file in the stage
+    try:
+        result = session.sql(f"CALL netflix_shows_ETL('{file_name}')").collect()
+        print("Stored procedure executed successfully:", result)
+    except Exception as e:
+        print("Error executing stored procedure:", e)
+
     return session.create_dataframe(dataframe)
