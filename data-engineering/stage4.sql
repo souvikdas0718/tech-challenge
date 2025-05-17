@@ -1,3 +1,5 @@
+USE DATABASE netflix_demo_db;
+USE SCHEMA netflix_demo_analytics;
 
 -- Show count of titles aggregate used in decription of the latest staged table created in Stage 3
 select description, count(*) AS count, array_agg(title) AS titles

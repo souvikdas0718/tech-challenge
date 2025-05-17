@@ -1,3 +1,6 @@
+USE DATABASE netflix_demo_db;
+USE SCHEMA netflix_demo_analytics;
+
 -- Create a stage 
 create or replace stage netflix_shows_stage
 file_format = (type = 'CSV' FIELD_DELIMITER = ',' field_optionally_enclosed_by = '"' skip_header = 1 COMPRESSION = 'NONE');
@@ -183,5 +186,5 @@ RETURN 'SUCCESS';
 END;
 $$;
 
--- Call the procedure manually by passing a manually uploaded file in the stage
+-- Call the procedure manually by passing a manually uploading the csv file in the stage via SnowSight UI
 CALL netflix_shows_ETL('netflix_titles.csv');

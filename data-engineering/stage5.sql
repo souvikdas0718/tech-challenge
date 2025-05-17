@@ -1,3 +1,6 @@
+USE DATABASE netflix_demo_db;
+USE SCHEMA netflix_demo_analytics;
+
 -- What is the most common first name among actors and actresses.
 
     -- First, gather all the cast names from the fact table.
