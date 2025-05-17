@@ -1,6 +1,6 @@
 -- Create a stage 
-create stage if not exists netflix_shows_stage
-file_format = (type = 'CSV' FIELD_DELIMITER = ',' field_optionally_enclosed_by = '"' skip_header = 1);
+create or replace stage netflix_shows_stage
+file_format = (type = 'CSV' FIELD_DELIMITER = ',' field_optionally_enclosed_by = '"' skip_header = 1 COMPRESSION = 'NONE');
 
 -- Create the staging table
 CREATE OR REPLACE TABLE netflix_shows_stage_table (
@@ -36,6 +36,11 @@ $$
 BEGIN
 
 -- Insert into dimension tables
+-- Use DISTINCT to avoid duplicates
+-- Use NOT EXISTS to check for duplicates before inserting
+-- Use TRY_TO_NUMBER to handle any non-numeric values in the duration
+-- Use CASE to determine the duration type (Season or Minute)
+
 INSERT INTO dimension_director (directorName)
 SELECT DISTINCT director
 FROM netflix_shows_stage_table
@@ -114,7 +119,11 @@ WHERE show_id IS NOT NULL AND show_id NOT IN (
     SELECT showID FROM dimension_title
 );
 
--- Insert into facts table
+-- Insert into facts table and avoid duplicates
+-- Use LEFT JOIN to ensure all records from the staging table are considered
+-- and only insert those that do not already exist in the fact table
+-- Use TRY_TO_NUMBER to handle any non-numeric values in the duration
+-- Use CASE to determine the duration type (Season or Minute)
 
 INSERT INTO fact_netflix_shows (
     titleID, directorID, castID, countryID, dateID,
@@ -143,7 +152,19 @@ LEFT JOIN dimension_duration du
    AND CASE 
          WHEN r.duration ILIKE '%Season%' THEN 'Season'
          ELSE 'Minute'
-       END = du.durationType;
+       END = du.durationType
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM fact_netflix_shows f
+    WHERE f.titleID = t.titleID
+      AND f.directorID = d.directorID
+      AND f.castID = c.castID
+      AND f.countryID = co.countryID
+      AND f.dateID = da.dateID
+      AND f.ratingID = ra.ratingID
+      AND f.genreID = g.genreID
+      AND f.durationID = du.durationID
+);
 
 RETURN 'SUCCESS';
 
