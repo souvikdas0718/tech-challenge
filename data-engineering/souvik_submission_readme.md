@@ -7,13 +7,13 @@
 
   ![App Screenshot](screenshots/Netflix_Title_Schema.png)
 
-- Dimensions and Facts table image can be found here [dimensions_facts_tables.png](/data-engineering/screenshots/dimensions_facts_tables.png)
+- Dimensions and Facts table image can be found here:![dimensions_facts_tables.png](/data-engineering/screenshots/dimensions_facts_tables.png)
 
 **Stage 2** : Create an automated process using Snowflake to ELT the netflix_titles.csv data from the csv file into the tables.
 
 - The DDL scripts can be found in [stage2.sql](stage2.sql).
-- Stage details can be found here: [netflix_shows_stage.png](/data-engineering/screenshots/netflix_shows_stage.png)
-- Procedure details can be found here: [NETFLIX_SHOWS_ETL(file_name STRING)](/data-engineering/screenshots/netflix_shows_ETL.png)
+- Stage details can be found here: ![netflix_shows_stage.png](/data-engineering/screenshots/netflix_shows_stage.png)
+- Procedure details can be found here: ![NETFLIX_SHOWS_ETL(file_name STRING)](/data-engineering/screenshots/netflix_shows_ETL.png)
 
 **Stage 3**: Create a python program to:
 
