@@ -21,7 +21,7 @@
     2. Save the files to a source location for automated ingestion into Snowflake.
 
 - The python script can be found in [stage3.py](stage3.py).
-- The files created by the python script is uploaded in the stage NETFLIX_SHOWS_STAGE. The script has invoked the nextflix_updated_titles2.csv and nextflix_updated_titles.csv by calling the stored procedure using netflix_shows_ETL('{file_name}') function.
+- The files created by the python script is uploaded in the stage NETFLIX_SHOWS_STAGE. The script has invoked the [nextflix_updated_titles2.csv](/data-engineering/stage/netflix_updated_titles2.csv) and [nextflix_updated_titles.csv](/data-engineering/stage/netflix_updated_titles.csv) by calling the stored procedure using netflix_shows_ETL('{file_name}') function.
 
 **Stage 4** : Write SQL to validate the data staged and loaded, for example:
 
